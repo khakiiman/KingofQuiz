@@ -44,3 +44,12 @@ export function useAsyncReducer<State, Action>(
 export function noEffects<State>(state: State) {
   return { state, effects: [] };
 }
+
+
+
+  // if (action.tag === "new_game") {
+  //   return {
+  //     state: initState(state.questionItems),
+  //     effects: [],
+  //   };
+  // }

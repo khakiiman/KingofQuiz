@@ -25,7 +25,7 @@ export type AnsweredQuestion = {
   answer: Answer;
 };
 
-export type Category = "math" | "geography";
+export type Category = 'math' | 'geography';
 
 export function isAnswerCorrect({
   question,
@@ -49,13 +49,13 @@ export function questionItem(q: Question): QuestionItem {
 export function showOption(option: Option): string {
   switch (option) {
     case Option.A:
-      return "A";
+      return 'A';
     case Option.B:
-      return "B";
+      return 'B';
     case Option.C:
-      return "C";
+      return 'C';
     case Option.D:
-      return "D";
+      return 'D';
   }
 }
 

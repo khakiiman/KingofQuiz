@@ -1,41 +1,29 @@
-import { Question, Option } from "../questions";
-import { GameInProgressState } from "../state";
-import { GameInProgress } from "./GameInProgress";
+import { useAsyncReducer } from '../hooks/useAsyncReducer';
+import { Answer } from '../questions';
+import { answerAction, initState, reducer, startGameAction } from '../state';
+import { GameEnd } from './GameEnd';
+import { GameInProgress } from './GameInProgress';
+import { capitals } from '../capitals';
 
 export function Game() {
-  const exampleQuestion1: Question = {
-    correctOption: Option.A,
-    optionA: {
-      title: "Iran",
-      answer: "Tehran",
-    },
-    optionB: {
-      title: "Austria",
-      answer: "Wien",
-    },
-    optionC: {
-      title: "Azerbaijan",
-      answer: "Baku",
-    },
-    optionD: {
-      title: "Bahamas",
-      answer: "Nassau",
-    },
-  };
+  const [state, dispatch] = useAsyncReducer(initState(capitals), reducer);
 
-  const exampleState: GameInProgressState = {
-    tag: "in_progress",
-    answeredQuestions: [],
-    currentQuestion: exampleQuestion1,
-    currentAnswer: undefined,
-    nextQuestions: [],
-  };
-
-  return (
-    <GameInProgress
-      gameInProgressState={exampleState}
-      category="geography"
-      onAnswerClick={() => {}}
-    />
-  );
+  if (state.gameState.tag === 'in_progress') {
+    return (
+      <GameInProgress
+        gameInProgressState={state.gameState}
+        category='geography'
+        onAnswerClick={(answer: Answer) => dispatch(answerAction(answer))}
+      />
+    );
+  } else {
+    return (
+      <GameEnd
+        gameEndState={state.gameState}
+        onRestart={() => {
+          dispatch(startGameAction());
+        }}
+      />
+    );
+  }
 }

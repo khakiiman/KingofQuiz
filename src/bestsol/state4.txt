@@ -1,0 +1,70 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect } from "react";
+import { useAsyncReducer, noEffects } from "./hooks/useAsyncReducer";
+import { Answer, AnsweredQuestion, Question } from "./questions";
+
+export interface GameInProgressState {
+  tag: "in_progress";
+  answeredQuestions: Array<AnsweredQuestion>;
+  currentQuestion: Question;
+  currentAnswer?: Answer;
+  nextQuestions: Array<Question>;
+}
+
+export interface GameEndState {
+  tag: "ended";
+  answeredQuestions: Array<AnsweredQuestion>;
+}
+
+type Action =
+  | { type: "ANSWER_QUESTION"; answer: Answer }
+  | { type: "NEXT_QUESTION" }
+  | { type: "RESET_GAME" };
+
+function gameInProgressReducer(
+  state: GameInProgressState,
+  action: Action
+): { state: GameInProgressState; effects: Array<Lazy<Promise<Array<Action>>>> } {
+  switch (action.type) {
+    case "ANSWER_QUESTION": {
+      const answeredQuestion: AnsweredQuestion = {
+        question: state.currentQuestion,
+        answer: action.answer,
+      };
+      const answeredQuestions = [...state.answeredQuestions, answeredQuestion];
+      const nextState: GameInProgressState = {
+        ...state,
+        answeredQuestions,
+        currentAnswer: action.answer,
+      };
+      const effects = [
+        () =>
+          new Promise((resolve) => setTimeout(resolve, 1500)).then(() => [
+            { type: "NEXT_QUESTION" },
+          ]),
+      ];
+      return { state: nextState, effects };
+    }
+    case "NEXT_QUESTION": {
+      const [nextQuestion, ...nextQuestions] = state.nextQuestions;
+      const nextState: GameInProgressState = {
+        ...state,
+        currentQuestion: nextQuestion,
+        currentAnswer: undefined,
+        nextQuestions,
+      };
+      return { state: nextState, effects: [] };
+    }
+    case "RESET_GAME": {
+      const nextState: GameInProgressState = {
+        ...state,
+        answeredQuestions: [],
+        currentQuestion: state.nextQuestions[0],
+        currentAnswer: undefined,
+      };
+      return { state: nextState, effects: [] };
+    }
+    default:
+      return noEffects(state);
+  }
+}

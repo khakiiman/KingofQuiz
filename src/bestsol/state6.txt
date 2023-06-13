@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Answer,
   AnsweredQuestion,
-  makeQuestions,
   Question,
+  makeQuestions,
   QuestionItem,
 } from './questions';
 import { AsyncReducer, noEffects } from './hooks/useAsyncReducer';
@@ -43,10 +44,15 @@ export const answerAction = (answer: Answer): Action => ({
   tag: 'answer',
   answer,
 });
+
 export const nextQuestionAction: Lazy<Action> = () => ({
   tag: 'next_question',
 });
-export const startGameAction: Lazy<Action> = () => ({ tag: 'start_game' });
+
+export const startGameAction: Lazy<Action> = () => ({
+  tag: 'start_game',
+});
+
 export const newGameAction = (questions: Array<Question>): Action => ({
   tag: 'new_game',
   questions,
@@ -82,35 +88,31 @@ function nextQuestion(isAnswerCorrect: boolean): Lazy<Promise<Array<Action>>> {
 
 function newGame(data: Array<QuestionItem>): Lazy<Promise<Array<Action>>> {
   return async () => {
-    const numQuestions = 6;
-    const [firstQuestion, ...restQuestions] = makeQuestions(numQuestions, data);
-
-    return [newGameAction([firstQuestion, ...restQuestions])];
+    const questions = makeQuestions(6, data);
+    return [newGameAction(questions)];
   };
 }
 
 export const reducer: AsyncReducer<State, Action> = (state, action) => {
+  //
+  // Conditions
   if (action.tag === 'start_game') {
-    return {
-      state,
-      effects: [newGame(state.questionItems)],
-    };
+    const newState: State = initState(state.questionItems);
+    return { state: newState, effects: [] };
   }
 
   if (action.tag === 'new_game') {
-    const newState = initState(state.questionItems)
-
     return {
-      state: newState,
-      effects: [],
+      state: initState(state.questionItems),
+      effects: newGame(state.questionItems),
     };
   }
 
   if (action.tag === 'answer') {
     if (state.gameState.tag === 'ended') return noEffects(state);
-    if (state.gameState.currentAnswer !== undefined) return noEffects(state);
+    if (state.gameState.currentAnswer !== undefined) return noEffects(state); // already answered
 
-    const newState = {
+    const newState: State = {
       ...state,
       gameState: { ...state.gameState, currentAnswer: action.answer },
     };
@@ -127,7 +129,7 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
 
   if (action.tag === 'next_question') {
     if (state.gameState.tag === 'ended') return noEffects(state);
-    if (state.gameState.currentAnswer === undefined) return noEffects(state);
+    if (state.gameState.currentAnswer === undefined) return noEffects(state); // not answered yet!!
 
     const answeredQuestion: AnsweredQuestion = {
       question: state.gameState.currentQuestion,
@@ -145,7 +147,7 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
       });
     }
     const [head, ...tail] = state.gameState.nextQuestions;
-    const newGameState = {
+    const newGameState: GameInProgressState = {
       ...state.gameState,
       answeredQuestions,
       currentQuestion: head,

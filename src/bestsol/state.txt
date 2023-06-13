@@ -1,0 +1,83 @@
+import { Answer, AnsweredQuestion, Question } from "./questions";
+import { useAsyncReducer, AsyncReducer, noEffects } from "./hooks/useAsyncReducer";
+
+export interface GameInProgressState {
+  tag: "in_progress";
+  answeredQuestions: Array<AnsweredQuestion>;
+  currentQuestion: Question;
+  currentAnswer?: Answer;
+  nextQuestions: Array<Question>;
+}
+
+export interface GameEndState {
+  tag: "ended";
+  answeredQuestions: Array<AnsweredQuestion>;
+}
+
+export type State = GameInProgressState | GameEndState;
+
+
+export enum ActionType {
+  SetCurrentAnswer = "SET_CURRENT_ANSWER",
+  SetNextQuestions = "SET_NEXT_QUESTIONS",
+  AddAnsweredQuestion = "ADD_ANSWERED_QUESTION",
+  SetGameEnd = "SET_GAME_END",
+}
+
+
+interface SetCurrentAnswerAction {
+  type: ActionType.SetCurrentAnswer;
+  payload: Answer;
+}
+
+interface SetNextQuestionsAction {
+  type: ActionType.SetNextQuestions;
+  payload: Array<Question>;
+}
+
+interface AddAnsweredQuestionAction {
+  type: ActionType.AddAnsweredQuestion;
+  payload: AnsweredQuestion;
+}
+
+interface SetGameEndAction {
+  type: ActionType.SetGameEnd;
+}
+
+export type Action =
+  | SetCurrentAnswerAction
+  | SetNextQuestionsAction
+  | AddAnsweredQuestionAction
+  | SetGameEndAction;
+
+
+const asyncReducer: AsyncReducer<State, Action> = (state, action) => {
+  switch (action.type) {
+    case ActionType.SetCurrentAnswer:
+      return noEffects({
+        ...state,
+        currentAnswer: action.payload,
+      });
+    case ActionType.SetNextQuestions:
+      return noEffects({
+        ...state,
+        nextQuestions: action.payload,
+      });
+    case ActionType.AddAnsweredQuestion:
+      return noEffects({
+        ...state,
+        answeredQuestions: [...state.answeredQuestions, action.payload],
+      });
+    case ActionType.SetGameEnd:
+      return noEffects({
+        tag: "ended",
+        answeredQuestions: state.answeredQuestions,
+      });
+    default:
+      return noEffects(state);
+  }
+};
+
+export function useGameState(initialState: State): [State, React.Dispatch<Action>] {
+  return useAsyncReducer<State, Action>(initialState, asyncReducer);
+}

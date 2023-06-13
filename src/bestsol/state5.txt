@@ -1,0 +1,66 @@
+import { Answer, AnsweredQuestion, Question } from "./questions";
+
+export interface GameInProgressState {
+  tag: "in_progress";
+  answeredQuestions: Array<AnsweredQuestion>;
+  currentQuestion: Question;
+  currentAnswer?: Answer;
+  nextQuestions: Array<Question>;
+}
+
+export interface GameEndState {
+  tag: "ended";
+  answeredQuestions: Array<AnsweredQuestion>;
+}
+
+export type GameState = GameInProgressState | GameEndState;
+
+export function handleAnswer(
+  state: GameInProgressState,
+  answer: Answer
+): GameState {
+  const answeredQuestion: AnsweredQuestion = {
+    question: state.currentQuestion,
+    answer: answer,
+  };
+  const answeredQuestions = [...state.answeredQuestions, answeredQuestion];
+
+  if (answer === state.currentQuestion.correctOption) {
+    // Confetti code here
+    setTimeout(() => {
+      // Continue to the next question after 1500 milliseconds
+      const nextQuestion = state.nextQuestions[0];
+      const updatedNextQuestions = state.nextQuestions.slice(1);
+      const nextState: GameInProgressState = {
+        tag: "in_progress",
+        answeredQuestions: answeredQuestions,
+        currentQuestion: nextQuestion,
+        currentAnswer: undefined,
+        nextQuestions: updatedNextQuestions,
+      };
+      // Update the game state
+      // You need to implement the function to update the state here
+      updateGameState(nextState);
+    }, 1500);
+  } else {
+    // If the answer is incorrect, continue to the next question immediately
+    const nextQuestion = state.nextQuestions[0];
+    const updatedNextQuestions = state.nextQuestions.slice(1);
+    const nextState: GameInProgressState = {
+      tag: "in_progress",
+      answeredQuestions: answeredQuestions,
+      currentQuestion: nextQuestion,
+      currentAnswer: undefined,
+      nextQuestions: updatedNextQuestions,
+    };
+    // Update the game state
+    // You need to implement the function to update the state here
+    updateGameState(nextState);
+  }
+}
+
+function updateGameState(state: GameState) {
+  // Update the game state
+  // You need to implement the function to update the state here
+}
+

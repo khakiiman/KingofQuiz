@@ -1,0 +1,87 @@
+# import { Answer, AnsweredQuestion, Question } from './questions';
+
+# export interface GameInProgressState {
+#   tag: 'in_progress';
+#   answeredQuestions: Array<AnsweredQuestion>;
+#   currentQuestion: Question;
+#   currentAnswer?: Answer;
+#   nextQuestions: Array<Question>;
+# }
+
+# export interface GameEndState {
+#   tag: 'ended';
+#   answeredQuestions: Array<AnsweredQuestion>;
+# }
+
+# export type GameState = GameInProgressState | GameEndState;
+
+# export type GameAction =
+#   | { type: 'ANSWER_QUESTION'; answer: Answer }
+#   | { type: 'NEXT_QUESTION'; question: Question }
+#   | { type: 'RESTART_GAME'; answeredQuestions: Array<AnsweredQuestion> };
+
+# export function gameReducer(
+#   state: GameState,
+#   action: GameAction
+# ): GameState | undefined {
+#   switch (action.type) {
+#     case 'ANSWER_QUESTION':
+#       if (state.tag !== 'in_progress') return state;
+#       const { currentQuestion, currentAnswer, answeredQuestions } = state;
+#       if (currentAnswer === undefined) return state;
+
+#       const isAnswerCorrect = currentQuestion.correctOption === currentAnswer;
+#       const answeredQuestion: AnsweredQuestion = {
+#         question: currentQuestion,
+#         answer: currentAnswer,
+#       };
+#       const updatedAnsweredQuestions = [...answeredQuestions, answeredQuestion];
+
+#       if (isAnswerCorrect) {
+#         // Execute confetti effect here
+#         // ...
+
+#         // Delay next question
+#         setTimeout(() => {
+#           const nextQuestion =
+#             state.nextQuestions.length > 0 ? state.nextQuestions[0] : undefined;
+#           const updatedNextQuestions =
+#             state.nextQuestions.length > 0 ? state.nextQuestions.slice(1) : [];
+
+#           return {
+#             ...state,
+#             currentQuestion: nextQuestion,
+#             currentAnswer: undefined,
+#             answeredQuestions: updatedAnsweredQuestions,
+#             nextQuestions: updatedNextQuestions,
+#           };
+#         }, 1500);
+#       } else {
+#         return {
+#           ...state,
+#           currentAnswer: undefined,
+#           answeredQuestions: updatedAnsweredQuestions,
+#         };
+#       }
+#       break;
+
+#     case 'NEXT_QUESTION':
+#       if (state.tag !== 'in_progress') return state;
+#       const { question } = action;
+#       return {
+#         ...state,
+#         currentQuestion: question,
+#         currentAnswer: undefined,
+#       };
+
+#     case 'RESTART_GAME':
+#       const { answeredQuestions: finalAnsweredQuestions } = action;
+#       return {
+#         tag: 'ended',
+#         answeredQuestions: finalAnsweredQuestions,
+#       };
+
+#     default:
+#       return state;
+#   }
+# }

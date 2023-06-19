@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9122689a.css",
+    "main.js": "/static/js/main.3abfc429.js",
+    "static/media/FiraCode-VF.woff": "/static/media/FiraCode-VF.d7af67f866f9a5e0a113.woff",
+    "static/media/FiraCode-Bold.woff": "/static/media/FiraCode-Bold.e3428b597c378e1fdcb0.woff",
+    "static/media/FiraCode-SemiBold.woff": "/static/media/FiraCode-SemiBold.4558fb863ac61e930234.woff",
+    "static/media/FiraCode-Regular.woff": "/static/media/FiraCode-Regular.a25d3a54ca0de3944eb7.woff",
+    "static/media/FiraCode-Light.woff": "/static/media/FiraCode-Light.a81da37f7831691b78df.woff",
+    "static/media/FiraCode-Medium.woff": "/static/media/FiraCode-Medium.97af194ae4a793b66f40.woff",
+    "static/media/FiraCode-VF.woff2": "/static/media/FiraCode-VF.7fef988ad994d5988ff3.woff2",
+    "static/media/FiraCode-Bold.woff2": "/static/media/FiraCode-Bold.abe3ab87cff86bb05610.woff2",
+    "static/media/FiraCode-SemiBold.woff2": "/static/media/FiraCode-SemiBold.564932952cfbb676de45.woff2",
+    "static/media/FiraCode-Regular.woff2": "/static/media/FiraCode-Regular.bf5ea52fa0094c7f7621.woff2",
+    "static/media/FiraCode-Light.woff2": "/static/media/FiraCode-Light.89b207dfa6dd890c3f41.woff2",
+    "static/media/FiraCode-Medium.woff2": "/static/media/FiraCode-Medium.1bc138a84f63b384c3f2.woff2",
+    "index.html": "/index.html",
+    "main.9122689a.css.map": "/static/css/main.9122689a.css.map",
+    "main.3abfc429.js.map": "/static/js/main.3abfc429.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9122689a.css",
+    "static/js/main.3abfc429.js"
+  ]
+}

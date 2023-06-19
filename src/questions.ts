@@ -25,7 +25,16 @@ export type AnsweredQuestion = {
   answer: Answer;
 };
 
-export type Category = 'math' | 'geography';
+export type Category =
+  | 'math'
+  | 'geography'
+  | 'animalSpecies'
+  | 'landmark'
+  | 'history'
+  | 'science'
+  | 'animalSounds'
+  | 'animalDesc'
+  | 'chemicalElements';
 
 export function isAnswerCorrect({
   question,

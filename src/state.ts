@@ -1,20 +1,32 @@
 import {
   Answer,
   AnsweredQuestion,
+  Category,
   makeQuestions,
   Question,
   QuestionItem,
-} from './questions';
-import { AsyncReducer, noEffects } from './hooks/useAsyncReducer';
-import { delay } from './utils';
-import confetti from 'canvas-confetti';
+} from "./questions";
+import { AsyncReducer, noEffects } from "./hooks/useAsyncReducer";
+import { delay } from "./utils";
+import confetti from "canvas-confetti";
+
+export type State = {
+  questionItems: Map<Category, Array<QuestionItem>>;
+  category: Category;
+  gameState: GameState;
+};
+
+export type GameState =
+  | GameBeforeStartState
+  | GameInProgressState
+  | GameEndState;
 
 export interface GameBeforeStartState {
-  tag: 'before_start';
+  tag: "before_start";
 }
 
 export interface GameInProgressState {
-  tag: 'in_progress';
+  tag: "in_progress";
   answeredQuestions: Array<AnsweredQuestion>;
   currentQuestion: Question;
   currentAnswer?: Answer;
@@ -22,52 +34,52 @@ export interface GameInProgressState {
 }
 
 export interface GameEndState {
-  tag: 'ended';
+  tag: "ended";
   answeredQuestions: Array<AnsweredQuestion>;
 }
 
-export type GameState = GameInProgressState | GameEndState;
-
-export type State = {
-  questionItems: Array<QuestionItem>;
-  gameState: GameState;
-};
-
 export type Action =
-  | { tag: 'answer'; answer: Answer }
-  | { tag: 'next_question' }
-  | { tag: 'start_game' }
-  | { tag: 'new_game'; questions: Array<Question> };
+  | { tag: "answer"; answer: Answer }
+  | { tag: "next_question" }
+  | { tag: "category_set"; category: Category }
+  | { tag: "start_game" }
+  | { tag: "try_again" }
+  | {
+      tag: "new_game";
+      questions: Array<Question>;
+      questionItems: Array<QuestionItem>;
+    };
 
+export const tryAgainAction = (): Action => ({ tag: "try_again" });
+export const categorySetAction = (category: Category): Action => ({
+  tag: "category_set",
+  category,
+});
 export const answerAction = (answer: Answer): Action => ({
-  tag: 'answer',
+  tag: "answer",
   answer,
 });
 export const nextQuestionAction: Lazy<Action> = () => ({
-  tag: 'next_question',
+  tag: "next_question",
 });
-export const startGameAction: Lazy<Action> = () => ({ tag: 'start_game' });
-export const newGameAction = (questions: Array<Question>): Action => ({
-  tag: 'new_game',
+export const startGameAction: Lazy<Action> = () => ({ tag: "start_game" });
+export const newGameAction = (
+  questions: Array<Question>,
+  questionItems: Array<QuestionItem>
+): Action => ({
+  tag: "new_game",
   questions,
+  questionItems,
 });
 
-export function initState(questionItems: Array<QuestionItem>): State {
-  const numQuestions = 6;
-  const [firstQuestion, ...restQuestions] = makeQuestions(
-    numQuestions,
-    questionItems
-  );
+export function initState(): State {
   const gameState: GameState = {
-    tag: 'in_progress',
-    answeredQuestions: [],
-    currentQuestion: firstQuestion,
-    currentAnswer: undefined,
-    nextQuestions: restQuestions,
+    tag: "before_start",
   };
 
   return {
-    questionItems,
+    questionItems: new Map(),
+    category: "geography",
     gameState,
   };
 }
@@ -83,38 +95,65 @@ function nextQuestion(isAnswerCorrect: boolean): Lazy<Promise<Array<Action>>> {
 function newGame(data: Array<QuestionItem>): Lazy<Promise<Array<Action>>> {
   return async () => {
     const numQuestions = 6;
-    const [firstQuestion, ...restQuestions] = makeQuestions(numQuestions, data);
+    const questions = makeQuestions(numQuestions, data);
+    return [newGameAction(questions, data)];
+  };
+}
 
-    return [newGameAction([firstQuestion, ...restQuestions])];
+function newGameFirst(category: Category): Lazy<Promise<Array<Action>>> {
+  return async () => {
+    const data = await fetch(
+      `http://localhost:9000/questions/${category}`
+    ).then((res) => res.json());
+    const actions = await newGame(data)();
+    return actions;
   };
 }
 
 export const reducer: AsyncReducer<State, Action> = (state, action) => {
-  if (action.tag === 'start_game') {
-    return {
-      state,
-      effects: [newGame(state.questionItems)],
-    };
+  if (action.tag === "category_set") {
+    return noEffects({ ...state, category: action.category });
+  }
+  if (action.tag === "start_game") {
+    const questions = state.questionItems.get(state.category);
+    if (questions) {
+      return { state, effects: [newGame(questions)] };
+    } else {
+      return { state, effects: [newGameFirst(state.category)] };
+    }
   }
 
-  if (action.tag === 'new_game') {
-    const newState = initState(state.questionItems)
-
-    return {
-      state: newState,
-      effects: [],
+  if (action.tag === "new_game") {
+    const [firstQuestion, ...restQuestions] = action.questions;
+    const gameState: GameState = {
+      tag: "in_progress",
+      answeredQuestions: [],
+      currentQuestion: firstQuestion,
+      currentAnswer: undefined,
+      nextQuestions: restQuestions,
     };
+    return noEffects({
+      ...state,
+      gameState,
+      questionItems: state.questionItems.set(
+        state.category,
+        action.questionItems
+      ),
+    });
   }
 
-  if (action.tag === 'answer') {
-    if (state.gameState.tag === 'ended') return noEffects(state);
-    if (state.gameState.currentAnswer !== undefined) return noEffects(state);
+  if (action.tag === "answer") {
+    if (
+      state.gameState.tag === "before_start" ||
+      state.gameState.tag === "ended"
+    )
+      return noEffects(state);
+    if (state.gameState.currentAnswer !== undefined) return noEffects(state); // already answered
 
     const newState = {
       ...state,
       gameState: { ...state.gameState, currentAnswer: action.answer },
     };
-
     return {
       state: newState,
       effects: [
@@ -125,9 +164,13 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
     };
   }
 
-  if (action.tag === 'next_question') {
-    if (state.gameState.tag === 'ended') return noEffects(state);
-    if (state.gameState.currentAnswer === undefined) return noEffects(state);
+  if (action.tag === "next_question") {
+    if (
+      state.gameState.tag === "before_start" ||
+      state.gameState.tag === "ended"
+    )
+      return noEffects(state);
+    if (state.gameState.currentAnswer === undefined) return noEffects(state); // not answered yet!!
 
     const answeredQuestion: AnsweredQuestion = {
       question: state.gameState.currentQuestion,
@@ -141,7 +184,7 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
       // end of game
       return noEffects({
         ...state,
-        gameState: { answeredQuestions, tag: 'ended' },
+        gameState: { answeredQuestions, tag: "ended" },
       });
     }
     const [head, ...tail] = state.gameState.nextQuestions;
@@ -153,6 +196,10 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
       nextQuestions: tail,
     };
     return noEffects({ ...state, gameState: newGameState });
+  }
+
+  if (action.tag === "try_again") {
+    return noEffects({ ...state, gameState: { tag: "before_start" } });
   }
 
   return { state: state, effects: [] };

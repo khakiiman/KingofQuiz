@@ -1,5 +1,5 @@
-import { GameInProgressState } from "../state";
-import { GameSteps } from "./GameInProgress/GameSteps";
+import { GameInProgressState } from '../state';
+import { GameSteps } from './GameInProgress/GameSteps';
 import {
   QuestionItem,
   questionItem,
@@ -7,8 +7,8 @@ import {
   Answer,
   Category,
   showOption,
-} from "../questions";
-import { Button, Badge } from "react-daisyui";
+} from '../questions';
+import { Button, Badge } from 'react-daisyui';
 
 type Props = {
   gameInProgressState: GameInProgressState;
@@ -25,17 +25,30 @@ export function GameInProgress({
   const { correctOption } = currentQuestion;
 
   return (
-    <div className="flex flex-col items-center justify-start w-full h-full gap-8 sm:justify-center">
+    <div className='flex flex-col items-center justify-start w-full h-full gap-8 sm:justify-center'>
       <GameSteps gameInProgressState={gameInProgressState} />
 
-      <div className="flex-1 w-full max-w-2xl mx-2 shadow-xl card sm:flex-initial sm:min-h-[440px] bg-base-200">
-        <div className="z-10 items-center justify-between text-center card-body gap-4">
-          <h2 className="select-none card-title text-secondary whitespace-nowrap">
-            {category === "math" && "What is the result?"}
-            {category === "geography" && "Which city is the capital?"}
+      <div className='flex-1 w-full max-w-2xl mx-2 shadow-xl card sm:flex-initial sm:min-h-[440px] bg-base-200'>
+        <div className='z-10 items-center justify-between text-center card-body gap-4'>
+          <h2 className='select-none card-title text-secondary whitespace-nowrap'>
+            {category === 'math' && 'What is the result?'}
+            {category === 'geography' &&
+              'Which city is the capital of country?'}
+            {category === 'animalSpecies' &&
+              'Which Species is related to animal?'}
+            {category === 'landmark' && 'Where the landmark placed?'}
+            {category === 'history' && 'When did history event occur?'}
+            {category === 'science' &&
+              'Which science terms below related to this definition?'}
+            {category === 'animalSounds' &&
+              'Which one of sounds belongs to this animal?'}
+            {category === 'animalDesc' &&
+              'Which one of below description belongs to this animal?'}
+            {category === 'chemicalElements' &&
+              'Which one of below abbreviation belongs to this chemical element?'}
           </h2>
-          <div className="flex flex-col items-center justify-center w-full">
-            <h1 className="flex flex-col font-mono text-xl font-medium gap-2 sm:text-2xl">
+          <div className='flex flex-col items-center justify-center w-full'>
+            <h1 className='flex flex-col font-mono text-xl font-medium gap-2 sm:text-2xl'>
               {questionItem(currentQuestion).title}
             </h1>
           </div>
@@ -75,16 +88,16 @@ export function GameInProgress({
   );
 }
 
-type OptionResult = "error" | "correct" | "default";
+type OptionResult = 'error' | 'correct' | 'default';
 
 function optionResultToColor(optionResult: OptionResult) {
   switch (optionResult) {
-    case "default":
+    case 'default':
       return undefined;
-    case "error":
-      return "error";
-    case "correct":
-      return "success";
+    case 'error':
+      return 'error';
+    case 'correct':
+      return 'success';
   }
 }
 
@@ -107,29 +120,29 @@ function OptionButton({
     currentAnswer !== undefined &&
     currentAnswer === option &&
     option !== correctOption
-      ? "error"
+      ? 'error'
       : currentAnswer !== undefined && option === correctOption
-      ? "correct"
-      : "default";
+      ? 'correct'
+      : 'default';
 
   return (
     <Button
       color={optionResultToColor(optionResult)}
       className={`justify-start w-64 m-2 gap-4 flex-nowrap ${
-        optionResult === "error" ? "animate-wiggle" : ""
+        optionResult === 'error' ? 'animate-wiggle' : ''
       } ${
-        currentAnswer !== undefined ? "pointer-events-none" : ""
+        currentAnswer !== undefined ? 'pointer-events-none' : ''
       } btn-default`}
       onClick={() => onClick(option)}
       data-testid={`${
-        correctOption === option ? "question-answer" : "question-option"
+        correctOption === option ? 'question-answer' : 'question-option'
       }`}
       key={option + questionItem.answer}
     >
-      <Badge size="lg" color="secondary">
+      <Badge size='lg' color='secondary'>
         {showOption(option)}
       </Badge>
-      <code className="font-mono text-lg font-medium normal-case truncate">
+      <code className='font-mono text-lg font-medium normal-case truncate'>
         {questionItem.answer}
       </code>
     </Button>

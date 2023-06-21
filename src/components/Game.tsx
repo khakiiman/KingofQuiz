@@ -3,10 +3,10 @@ import { Answer } from "../questions";
 import {
   answerAction,
   categorySetAction,
-  initState,
-  reducer,
   startGameAction,
   tryAgainAction,
+  initState,
+  reducer,
 } from "../state";
 import { GameEnd } from "./GameEnd";
 import { GameInProgress } from "./GameInProgress";

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.9122689a.css",
-    "main.js": "/static/js/main.3abfc429.js",
+    "main.js": "/static/js/main.7f04cacb.js",
     "static/media/FiraCode-VF.woff": "/static/media/FiraCode-VF.d7af67f866f9a5e0a113.woff",
     "static/media/FiraCode-Bold.woff": "/static/media/FiraCode-Bold.e3428b597c378e1fdcb0.woff",
     "static/media/FiraCode-SemiBold.woff": "/static/media/FiraCode-SemiBold.4558fb863ac61e930234.woff",
@@ -16,10 +16,10 @@
     "static/media/FiraCode-Medium.woff2": "/static/media/FiraCode-Medium.1bc138a84f63b384c3f2.woff2",
     "index.html": "/index.html",
     "main.9122689a.css.map": "/static/css/main.9122689a.css.map",
-    "main.3abfc429.js.map": "/static/js/main.3abfc429.js.map"
+    "main.7f04cacb.js.map": "/static/js/main.7f04cacb.js.map"
   },
   "entrypoints": [
     "static/css/main.9122689a.css",
-    "static/js/main.3abfc429.js"
+    "static/js/main.7f04cacb.js"
   ]
 }

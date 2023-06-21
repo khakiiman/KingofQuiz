@@ -1,8 +1,0 @@
-[build]
-command = "npm run build"
-publish = "build"
-
-[[redirects]]
-from = "https://kingofquiz.netlify.app/questions/*"
-to = "http://localhost:9000/questions/:category"
-status = 200

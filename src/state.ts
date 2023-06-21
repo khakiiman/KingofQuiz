@@ -5,10 +5,11 @@ import {
   makeQuestions,
   Question,
   QuestionItem,
-} from "./questions";
-import { AsyncReducer, noEffects } from "./hooks/useAsyncReducer";
-import { delay } from "./utils";
-import confetti from "canvas-confetti";
+} from './questions';
+import { AsyncReducer, noEffects } from './hooks/useAsyncReducer';
+import { delay } from './utils';
+import confetti from 'canvas-confetti';
+import { databaseQuestions } from './dataBase';
 
 export type State = {
   questionItems: Map<Category, Array<QuestionItem>>;
@@ -22,11 +23,11 @@ export type GameState =
   | GameEndState;
 
 export interface GameBeforeStartState {
-  tag: "before_start";
+  tag: 'before_start';
 }
 
 export interface GameInProgressState {
-  tag: "in_progress";
+  tag: 'in_progress';
   answeredQuestions: Array<AnsweredQuestion>;
   currentQuestion: Question;
   currentAnswer?: Answer;
@@ -34,52 +35,52 @@ export interface GameInProgressState {
 }
 
 export interface GameEndState {
-  tag: "ended";
+  tag: 'ended';
   answeredQuestions: Array<AnsweredQuestion>;
 }
 
 export type Action =
-  | { tag: "answer"; answer: Answer }
-  | { tag: "next_question" }
-  | { tag: "category_set"; category: Category }
-  | { tag: "start_game" }
-  | { tag: "try_again" }
+  | { tag: 'answer'; answer: Answer }
+  | { tag: 'next_question' }
+  | { tag: 'category_set'; category: Category }
+  | { tag: 'start_game' }
+  | { tag: 'try_again' }
   | {
-      tag: "new_game";
+      tag: 'new_game';
       questions: Array<Question>;
       questionItems: Array<QuestionItem>;
     };
 
-export const tryAgainAction = (): Action => ({ tag: "try_again" });
+export const tryAgainAction = (): Action => ({ tag: 'try_again' });
 export const categorySetAction = (category: Category): Action => ({
-  tag: "category_set",
+  tag: 'category_set',
   category,
 });
 export const answerAction = (answer: Answer): Action => ({
-  tag: "answer",
+  tag: 'answer',
   answer,
 });
 export const nextQuestionAction: Lazy<Action> = () => ({
-  tag: "next_question",
+  tag: 'next_question',
 });
-export const startGameAction: Lazy<Action> = () => ({ tag: "start_game" });
+export const startGameAction: Lazy<Action> = () => ({ tag: 'start_game' });
 export const newGameAction = (
   questions: Array<Question>,
   questionItems: Array<QuestionItem>
 ): Action => ({
-  tag: "new_game",
+  tag: 'new_game',
   questions,
   questionItems,
 });
 
 export function initState(): State {
   const gameState: GameState = {
-    tag: "before_start",
+    tag: 'before_start',
   };
 
   return {
     questionItems: new Map(),
-    category: "geography",
+    category: 'geography',
     gameState,
   };
 }
@@ -102,19 +103,17 @@ function newGame(data: Array<QuestionItem>): Lazy<Promise<Array<Action>>> {
 
 function newGameFirst(category: Category): Lazy<Promise<Array<Action>>> {
   return async () => {
-    const data = await fetch(
-      `http://localhost:9000/questions/${category}`
-    ).then((res) => res.json());
+    const data = databaseQuestions[category];
     const actions = await newGame(data)();
     return actions;
   };
 }
 
 export const reducer: AsyncReducer<State, Action> = (state, action) => {
-  if (action.tag === "category_set") {
+  if (action.tag === 'category_set') {
     return noEffects({ ...state, category: action.category });
   }
-  if (action.tag === "start_game") {
+  if (action.tag === 'start_game') {
     const questions = state.questionItems.get(state.category);
     if (questions) {
       return { state, effects: [newGame(questions)] };
@@ -123,10 +122,10 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
     }
   }
 
-  if (action.tag === "new_game") {
+  if (action.tag === 'new_game') {
     const [firstQuestion, ...restQuestions] = action.questions;
     const gameState: GameState = {
-      tag: "in_progress",
+      tag: 'in_progress',
       answeredQuestions: [],
       currentQuestion: firstQuestion,
       currentAnswer: undefined,
@@ -142,10 +141,10 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
     });
   }
 
-  if (action.tag === "answer") {
+  if (action.tag === 'answer') {
     if (
-      state.gameState.tag === "before_start" ||
-      state.gameState.tag === "ended"
+      state.gameState.tag === 'before_start' ||
+      state.gameState.tag === 'ended'
     )
       return noEffects(state);
     if (state.gameState.currentAnswer !== undefined) return noEffects(state); // already answered
@@ -164,10 +163,10 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
     };
   }
 
-  if (action.tag === "next_question") {
+  if (action.tag === 'next_question') {
     if (
-      state.gameState.tag === "before_start" ||
-      state.gameState.tag === "ended"
+      state.gameState.tag === 'before_start' ||
+      state.gameState.tag === 'ended'
     )
       return noEffects(state);
     if (state.gameState.currentAnswer === undefined) return noEffects(state); // not answered yet!!
@@ -184,7 +183,7 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
       // end of game
       return noEffects({
         ...state,
-        gameState: { answeredQuestions, tag: "ended" },
+        gameState: { answeredQuestions, tag: 'ended' },
       });
     }
     const [head, ...tail] = state.gameState.nextQuestions;
@@ -198,8 +197,8 @@ export const reducer: AsyncReducer<State, Action> = (state, action) => {
     return noEffects({ ...state, gameState: newGameState });
   }
 
-  if (action.tag === "try_again") {
-    return noEffects({ ...state, gameState: { tag: "before_start" } });
+  if (action.tag === 'try_again') {
+    return noEffects({ ...state, gameState: { tag: 'before_start' } });
   }
 
   return { state: state, effects: [] };

@@ -34,7 +34,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
       <div className='flex justify-center text-center items-center'>
         <h1 className='capitalize font-[Audiowide] font-bold text-2xl text-[#f7ea25]'>quiz categories</h1>
       </div>
-      <div className='grid grid-cols-3 gap-16 items-center btn-group'>
+      <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-4 xs:gap-16 items-center btn-group'>
         <button
           color={buttonColor('geography')}
           className={`${buttonClasses(

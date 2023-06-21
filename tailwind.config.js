@@ -1,7 +1,13 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "node_modules/daisyui/dist/**/*.js"],
   theme: {
+    screens: {
+      xs: '504px',
+      ...defaultTheme.screens,
+    },
     extend: {
       animation: {
         wiggle: "wiggle 0.3s ease-in-out 1",

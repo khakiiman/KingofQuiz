@@ -32,7 +32,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
   return (
     <>
       <div className='flex justify-center text-center items-center'>
-        <h1 className='capitalize font-[Audiowide] font-bold text-2xl text-[#f7ea25]'>quiz categories</h1>
+        <h1 className='capitalize font-[Audiowide] font-bold text-xl xs:text-2xl'>quiz categories</h1>
       </div>
       <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-4 xs:gap-16 items-center btn-group'>
         <button
@@ -43,7 +43,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
           onClick={() => onCategorySet('geography')}
           data-testid='geography-category'
         >
-          <div className='before:content-["GEOGRAPHY"] after:content-["Select!"] '>
+          <div className='before:content-["geography"] after:content-["Select!"]'>
             <BiMap
               strokeWidth={'0.8px'}
               stroke='#000'
@@ -62,7 +62,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
           onClick={() => onCategorySet('math')}
           data-testid='math-category'
         >
-          <div className='before:content-["MATH"] after:content-["Select!"]'>
+          <div className='before:content-["math"] after:content-["Select!"]'>
             <BiMath
               strokeWidth={'0.8px'}
               stroke='#000'
@@ -81,7 +81,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
           onClick={() => onCategorySet('animalSpecies')}
           data-testid='animalSpecies-category'
         >
-          <div className='before:content-["ANIMAL_SPECIES"] after:content-["Select!"]'>
+          <div className='before:content-["Animal_Species"] after:content-["Select!"]'>
             <GiScarabBeetle
               strokeWidth={'0.8px'}
               stroke='#000'
@@ -100,7 +100,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
           onClick={() => onCategorySet('landmark')}
           data-testid='landmark-category'
         >
-          <div className='before:content-["FAMOUS_LANDMARK"] after:content-["Select!"]'>
+          <div className='before:content-["Famous_Landmark"] after:content-["Select!"]'>
             <BiLandscape
               strokeWidth={'0.8px'}
               stroke='#000'
@@ -119,7 +119,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
           onClick={() => onCategorySet('history')}
           data-testid='history-category'
         >
-          <div className='before:content-["HISTORY_EVENTS"] after:content-["Select!"]'>
+          <div className='before:content-["History_Events"] after:content-["Select!"]'>
             <GiAncientRuins
               strokeWidth={'0.8px'}
               stroke='#000'
@@ -138,7 +138,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
           onClick={() => onCategorySet('science')}
           data-testid='science-category'
         >
-          <div className='before:content-["SCIENCE_TERMS"] after:content-["Select!"]'>
+          <div className='before:content-["Science_Terms"] after:content-["Select!"]'>
             <MdOutlineScience
               strokeWidth={'0.8px'}
               stroke='#000'
@@ -157,7 +157,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
           onClick={() => onCategorySet('animalSounds')}
           data-testid='animalSounds-category'
         >
-          <div className='before:content-["ANIMAL_SOUNDS"] after:content-["Select!"]'>
+          <div className='before:content-["Animal_Sounds"] after:content-["Select!"]'>
             <GiSaberToothedCatHead
               strokeWidth={'0.8px'}
               stroke='#000'
@@ -176,7 +176,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
           onClick={() => onCategorySet('animalDesc')}
           data-testid='animalDesc-category'
         >
-          <div className='before:content-["ANIMAL_INFO"] after:content-["Select!"] '>
+          <div className='before:content-["Animal_Info"] after:content-["Select!"] '>
             <SiDatadog
               color='#f7ea25'
               size='30px'
@@ -193,7 +193,7 @@ export function GameStart({ category, onStartClick, onCategorySet }: Props) {
           onClick={() => onCategorySet('chemicalElements')}
           data-testid='chemicalElements-category'
         >
-          <div className='before:content-["CHEMICAL_TABLE"] after:content-["Select!"]'>
+          <div className='before:content-["Chemical_Table"] after:content-["Select!"]'>
             <GiChemicalDrop
               strokeWidth={'0.8px'}
               stroke='#000'

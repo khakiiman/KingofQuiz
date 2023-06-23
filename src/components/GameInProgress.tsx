@@ -30,7 +30,7 @@ export function GameInProgress({
 
       <div className='flex-1 w-full max-w-2xl mx-2 shadow-xl card sm:flex-initial sm:min-h-[440px] bg-base-200'>
         <div className='z-10 items-center justify-between text-center card-body gap-4'>
-          <h2 className='select-none card-title text-secondary whitespace-nowrap'>
+          <h2 className='select-none card-title text-secondary whitespace-normal'>
             {category === 'math' && 'What is the result?'}
             {category === 'geography' &&
               'Which city is the capital of country?'}

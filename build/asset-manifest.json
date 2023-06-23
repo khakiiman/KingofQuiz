@@ -1,7 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.9122689a.css",
-    "main.js": "/static/js/main.7f04cacb.js",
+    "main.css": "/static/css/main.be4a5f59.css",
+    "main.js": "/static/js/main.9dd1effc.js",
+    "static/media/favicon.png": "/static/media/favicon.2718da995c6a3744e3dc.png",
     "static/media/FiraCode-VF.woff": "/static/media/FiraCode-VF.d7af67f866f9a5e0a113.woff",
     "static/media/FiraCode-Bold.woff": "/static/media/FiraCode-Bold.e3428b597c378e1fdcb0.woff",
     "static/media/FiraCode-SemiBold.woff": "/static/media/FiraCode-SemiBold.4558fb863ac61e930234.woff",
@@ -14,12 +15,14 @@
     "static/media/FiraCode-Regular.woff2": "/static/media/FiraCode-Regular.bf5ea52fa0094c7f7621.woff2",
     "static/media/FiraCode-Light.woff2": "/static/media/FiraCode-Light.89b207dfa6dd890c3f41.woff2",
     "static/media/FiraCode-Medium.woff2": "/static/media/FiraCode-Medium.1bc138a84f63b384c3f2.woff2",
+    "static/media/moon.svg": "/static/media/moon.52371873521eab54067d5007caa72ba8.svg",
+    "static/media/sun.svg": "/static/media/sun.3d4599eb5dd27933b61282ed80339279.svg",
     "index.html": "/index.html",
-    "main.9122689a.css.map": "/static/css/main.9122689a.css.map",
-    "main.7f04cacb.js.map": "/static/js/main.7f04cacb.js.map"
+    "main.be4a5f59.css.map": "/static/css/main.be4a5f59.css.map",
+    "main.9dd1effc.js.map": "/static/js/main.9dd1effc.js.map"
   },
   "entrypoints": [
-    "static/css/main.9122689a.css",
-    "static/js/main.7f04cacb.js"
+    "static/css/main.be4a5f59.css",
+    "static/js/main.9dd1effc.js"
   ]
 }

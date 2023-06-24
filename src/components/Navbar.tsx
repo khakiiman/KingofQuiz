@@ -6,7 +6,7 @@ import moon from '../assets/moon.svg';
 
 const Navbar = () => {
   const [theme, setTheme]: any = useState(
-    localStorage.getItem('theme') ? localStorage.getItem('theme') : 'acid'
+    localStorage.getItem('theme') ? localStorage.getItem('theme') : 'dracula'
   );
   const handleToggle = (e: any) => {
     if (e.target.checked) {

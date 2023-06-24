@@ -85,7 +85,7 @@ export function GameEnd({
 function Table({ questions }: { questions: Array<AnsweredQuestion> }) {
   return (
     <div className='my-6 overflow-x-auto shadow'>
-      <table className='table w-screen'>
+      <table className='table w-screen ml-16 sm:ml-0 sm:w-full'>
         <thead className='hidden sm:table-header-group'>
           <tr>
             <th></th>

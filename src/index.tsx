@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <div className='absolute inset-0 flex flex-col justify-between font-sans'>
-      <main className='flex flex-col items-center justify-center flex-1 p-5 text-center gap-8 sm:gap-4'>
+      <main className='flex flex-col items-center justify-center flex-1 p-5 text-center gap-4 sm:gap-4'>
           <Navbar />
         <div className='flex flex-col items-center justify-start w-full h-full gap-8 sm:justify-center'>
           <Game />

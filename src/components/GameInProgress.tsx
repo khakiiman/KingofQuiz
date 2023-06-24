@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { GameInProgressState } from '../state';
 import { GameSteps } from './GameInProgress/GameSteps';
 import {
@@ -13,24 +14,26 @@ import { Button, Badge } from 'react-daisyui';
 type Props = {
   gameInProgressState: GameInProgressState;
   onAnswerClick: (answer: Answer) => void;
+  onRestart: () => void;
   category: Category;
 };
 
 export function GameInProgress({
   gameInProgressState,
   onAnswerClick,
+  onRestart,
   category,
 }: Props) {
   const { currentQuestion, currentAnswer } = gameInProgressState;
   const { correctOption } = currentQuestion;
 
   return (
-    <div className='flex flex-col items-center justify-start w-full h-full gap-8 sm:justify-center'>
+    <div className='flex flex-col items-center justify-start w-full h-full gap-6 sm:gap-8 sm:justify-center'>
       <GameSteps gameInProgressState={gameInProgressState} />
 
       <div className='flex-1 w-full max-w-2xl mx-2 shadow-xl card sm:flex-initial sm:min-h-[440px] bg-base-200'>
-        <div className='z-10 items-center justify-between text-center card-body gap-4'>
-          <h2 className='select-none card-title text-secondary whitespace-normal'>
+        <div className='z-10 items-center justify-between text-center card-body gap-2 sm:gap-4'>
+          <h2 className='select-none card-title text-primary-focus whitespace-normal'>
             {category === 'math' && 'What is the result?'}
             {category === 'geography' &&
               'Which city is the capital of country?'}
@@ -83,6 +86,40 @@ export function GameInProgress({
             />
           </div>
         </div>
+      </div>
+      <div className='withdrawButtonWrapper'>
+        <a
+          onClick={onRestart}
+          className='capitalize withdrawButton bg-slate-400'
+          data-testid='try-again-button'
+          href='#'
+        >
+          Withdraw
+        </a>
+        <svg
+          className='hidden absolute'
+          width='0'
+          height='0'
+          xmlns='http://www.w3.org/2000/svg'
+          version='1.1'
+        >
+          <defs>
+            <filter id='goo'>
+              <feGaussianBlur
+                in='SourceGraphic'
+                stdDeviation='10'
+                result='blur'
+              />
+              <feColorMatrix
+                in='blur'
+                mode='matrix'
+                values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9'
+                result='goo'
+              />
+              <feComposite in='SourceGraphic' in2='goo' operator='atop' />
+            </filter>
+          </defs>
+        </svg>
       </div>
     </div>
   );

@@ -43,6 +43,6 @@ module.exports = {
   },
   plugins: [require('daisyui')],
   daisyui: {
-    themes: ['acid', 'dracula'],
+    themes: [ 'acid' , 'dracula'],
   },
 };

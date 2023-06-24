@@ -24,13 +24,11 @@ const Navbar = () => {
 
   return (
     <div className='flex items-center justify-between w-full'>
-      <div className='flex justify-center items-center'>
-        <img src={logo} alt='OM' className='btn btn-ghost p-0' />
-        <h1 className='capitalize font-[Audiowide] font-bold text-xl xs:text-2xl mx-4'>
-          King of Quiz
-        </h1>
-      </div>
-      <div className='flex-none'>
+      <img src={logo} alt='OM' className='btn btn-ghost p-0' />
+      <h1 className='capitalize font-[Audiowide] font-bold text-xl xs:text-2xl mx-4'>
+        King of Quiz
+      </h1>
+      <div>
         <button className='btn btn-square btn-ghost'>
           <label className='swap swap-rotate w-12 h-12'>
             <input

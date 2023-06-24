@@ -104,7 +104,8 @@ function Table({ questions }: { questions: Array<AnsweredQuestion> }) {
                 )}
               </th>
               <td className='py-0.5 pr-1 font-bold sm:pr-3'>
-                {(questionItem(aq.question).title).slice(0,25) + '...'}
+                {questionItem(aq.question).title.slice(0, 25)} 
+                {questionItem(aq.question).title.length <= 15 ? '' : '...'}
               </td>
               <td className='hidden py-0.5 pr-1 sm:table-cell sm:pr-3'>
                 <pre className='max-w-lg font-mono font-medium truncate'>

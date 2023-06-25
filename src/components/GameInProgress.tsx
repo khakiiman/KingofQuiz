@@ -90,7 +90,7 @@ export function GameInProgress({
       <div className='withdrawButtonWrapper'>
         <a
           onClick={onRestart}
-          className='capitalize withdrawButton bg-slate-400'
+          className='uppercase withdrawButton bg-[#ffe66b]'
           data-testid='try-again-button'
           href='#'
         >

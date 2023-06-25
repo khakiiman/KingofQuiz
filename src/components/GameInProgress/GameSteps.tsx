@@ -68,7 +68,7 @@ function Step({ step }: StepProp) {
   } else if (step === "current") {
     return (
       <li className={liClass}>
-        <ImRadioChecked color="white" className="text-neutral" />
+        <ImRadioChecked color="#1982c4" className="text-neutral" />
       </li>
     );
   } else {

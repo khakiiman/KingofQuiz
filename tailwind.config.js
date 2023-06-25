@@ -43,6 +43,15 @@ module.exports = {
   },
   plugins: [require('daisyui')],
   daisyui: {
-    themes: [ 'acid' , 'dracula'],
+    darkTheme: "dracula",
+    themes: [
+      {
+        acid: {
+          ...require('daisyui/src/colors/themes')['[data-theme=light]'],
+          'base-100': '#e1e4e8',
+        },
+      },
+      'dracula',
+    ],
   },
 };
